@@ -1,0 +1,48 @@
+application:
+  mode: "async"
+  infinite: false
+  count: 100
+  pool_size: 10
+  verbose: true
+  passphrase: ""
+  timeout: 1
+
+network:
+  name: "localnet"
+  mode: "api" # If you want the framework to use your local node running in a specific network, set this to "local"
+  gas:
+    cost: 0.01 # Estimated gas cost that will be used for funding calculations etc.
+    limit: 53000 # Higher limit than regular txs (21000) - seems there are some issues occasionally when using a lower gas limit 
+    price: 1
+
+account:
+  passphrase: ""
+
+funding:
+  timeout: 60 # This will be multiplied * 4 to deal with the general slowness of the staking network
+  attempts: 5
+  gas:
+    cost: 0.0001
+    limit: 53000
+    price: 1
+
+delegation:
+  amount: 0.000000000000000001
+  from_shard: 0
+  to_shard: 0
+  gas:
+    limit: 53000
+    price: 5
+
+transactions:
+  amount: 0.000000000000000001
+  from_shard: 0
+  to_shard: 0
+  data: ""
+  count: 1000
+  pool_size: 100
+  confirmation_wait_time: 0
+  gas:
+    cost: 0.0001
+    limit: 5000000 # somehow core.IntrinsicGas doesn't correctly calculate the gas limit for txs with large tx data - a gas limit of 5000000 will allow max size txs (32kb) to properly work
+    price: 1
