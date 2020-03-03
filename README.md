@@ -1,5 +1,5 @@
-# Harmony Validator Spammer
-Harmony tx sender is a tool to bulk send transactions on Harmony's blockchain.
+# Harmony Stress
+Stress testing tools for Harmony.
 
 ## Prerequisites
 You need to import an existing key with funds to the keystore.
@@ -26,37 +26,58 @@ The installer script will also download the `config.yml` (contains general setti
 
 
 ## Usage
+
+### Regular transaction stress testing
+
 ```
-./harmony-stress --network staking --from YOUR_SENDER_ACCOUNT_ADDRESS --infinite
+./stress txs --from YOUR_ADDRESS --network NETWORK --count COUNT --pool-size POOL_SIZE
+```
+
+### Validator creation stress testing
+
+```
+./stress validators --from YOUR_ADDRESS --network NETWORK --count COUNT --pool-size POOL_SIZE
+```
+
+### Delegation stress testing
+
+```
+dist/stress delegations --from YOUR_ADDRESS --network NETWORK --count COUNT --pool-size POOL_SIZE
 ```
 
 ### All options:
 
 ```
-NAME:
-   Harmony Validator Spammer - stress tests a staking enabled Harmony network/blockchain - Use --help to see all available arguments
+$ ./stress --help
+Harmony stress test tool
 
-USAGE:
-   harmony-stress [global options] command [command options] [arguments...]
+Usage:
+  stress [flags]
+  stress [command]
 
-VERSION:
-   go1.13.7/darwin-amd64
+Available Commands:
+  delegations Stress test delegation transactions
+  help        Help about any command
+  txs         Stress test normal transactions
+  validators  Stress test validator creation
+  version     Show version
 
-AUTHOR:
-   Sebastian Johnsson
+Flags:
+      --app-mode string       <app-mode> (default "async")
+      --count int             <count> (default 1000)
+      --from string           <from>
+  -h, --help                  help for stress
+      --infinite              <infinite>
+      --network string        <network> (default "localnet")
+      --network-mode string   <mode> (default "api")
+      --node string           <node>
+      --passphrase string     <passphrase>
+      --path string           <path> (default ".")
+      --pool-size int         <pool-size> (default 100)
+      --pprof-port int        <pprof-port> (default -1)
+      --timeout int           <pool-size>
+      --verbose               <verbose>
+      --verbose-go-sdk        <verbose-go-sdk>
 
-COMMANDS:
-   help, h  Shows a list of commands or help for one command
-
-GLOBAL OPTIONS:
-   --network value                 Which network to use (valid options: localnet, devnet, testnet, mainnet)
-   --from value                    Which address to send tokens from (must exist in the keystore)
-   --passphrase value              Passphrase to use for unlocking the keystore
-   --infinite                      If the program should run in an infinite loop
-   --count value                   How many transactions to send in total (default: 0)
-   --pool-size value               How many validators to create simultaneously (default: 0)
-   --timeout value  How long to wait for transactions to get confirmed (default: 0)
-   --verbose                       Enable more verbose output
-   --help, -h                      show help
-   --version, -v                   print the version
+Use "stress [command] --help" for more information about a command.
 ```
