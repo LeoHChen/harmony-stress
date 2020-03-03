@@ -42,7 +42,7 @@ The installer script will also download the `config.yml` (contains general setti
 ### Delegation stress testing
 
 ```
-dist/stress delegations --from YOUR_ADDRESS --network NETWORK --count COUNT --pool-size POOL_SIZE
+./stress delegations --from YOUR_ADDRESS --network NETWORK --count COUNT --pool-size POOL_SIZE
 ```
 
 ### All options:
