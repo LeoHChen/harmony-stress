@@ -24,8 +24,9 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 	fmt.Println(fmt.Sprintf("Running using network %s in %s mode", Configuration.Network.Name, strings.ToUpper(Configuration.Network.Mode)))
 	fmt.Println(fmt.Sprintf("Current nonce is: %d, current gas price is %f", currentNonce, gasPrice))
 
-	electedValidators, err := sdkValidator.AllElected(Configuration.Network.RPC)
-	fmt.Println(fmt.Sprintf("Found a total of %d elected validators to send delegations to", len(electedValidators)))
+	//electedValidators, err := sdkValidator.AllElected(Configuration.Network.RPC)
+	allValidators, err := sdkValidator.All(Configuration.Network.RPC)
+	fmt.Println(fmt.Sprintf("Found a total of %d elected validators to send delegations to", len(allValidators)))
 
 	if Configuration.Application.Count > Configuration.Application.PoolSize {
 		pools = int(math.RoundToEven(float64(Configuration.Application.Count) / float64(Configuration.Application.PoolSize)))
@@ -43,7 +44,7 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 
 		for i := 0; i < Configuration.Application.PoolSize; i++ {
 			r := rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
-			toAddress := utils.RandomStringSliceItem(r, electedValidators)
+			toAddress := utils.RandomStringSliceItem(r, allValidators)
 
 			if Configuration.Application.Mode == "sync" {
 				txResult, err := sendDelegation(toAddress, currentNonce, gasPrice)

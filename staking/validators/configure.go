@@ -69,9 +69,14 @@ func configureNetworkConfig(flags cmd.PersistentFlags) (err error) {
 		Configuration.Network.Mode = mode
 	}
 
+	if flags.Node != "" && flags.Node != Configuration.Network.Node {
+		Configuration.Network.Node = flags.Node
+	}
+
 	Configuration.Network.API = sdkNetwork.Network{
 		Name: Configuration.Network.Name,
 		Mode: Configuration.Network.Mode,
+		Node: Configuration.Network.Node,
 	}
 
 	Configuration.Network.Gas.Initialize()

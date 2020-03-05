@@ -108,7 +108,7 @@ func CreateValidator(index int, nonce int, gasPrice numeric.Dec, waitGroup *sync
 
 		validators.Staking.Create.Validator.Account = &account
 		blsKeys := crypto.GenerateBlsKeys(validators.Staking.Create.BLSKeyCount, "")
-		rawTx, err := tfStaking.CreateValidator(&account, nil, &validators.Staking, blsKeys)
+		rawTx, err := tfStaking.CreateValidator(&account, &account, &validators.Staking, blsKeys)
 		if err != nil {
 			logger.ErrorLog(fmt.Sprintf("Failed to create validator - error: %s", err.Error()), validators.Configuration.Application.Verbose)
 			return err
