@@ -5,23 +5,36 @@ import (
 
 	cmdConfig "github.com/SebastianJ/harmony-stress/config/cmd"
 	"github.com/SebastianJ/harmony-stress/staking/validators"
+	validatorsCreate "github.com/SebastianJ/harmony-stress/staking/validators/create"
+	validatorsEdit "github.com/SebastianJ/harmony-stress/staking/validators/edit"
 	"github.com/spf13/cobra"
 )
 
 func init() {
-	cmdValidators := &cobra.Command{
-		Use:   "validators",
+	cmdCreateValidators := &cobra.Command{
+		Use:   "create-validators",
 		Short: "Stress test validator creation",
 		Long:  "Stress tests the creation of validators",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return stressTestValidators(cmd)
+			return stressTestCreateValidators(cmd)
 		},
 	}
 
-	RootCmd.AddCommand(cmdValidators)
+	RootCmd.AddCommand(cmdCreateValidators)
+
+	cmdEditValidators := &cobra.Command{
+		Use:   "edit-validators",
+		Short: "Stress test validator editing",
+		Long:  "Stress tests the editing of validators",
+		RunE: func(cmd *cobra.Command, args []string) error {
+			return stressTestEditValidators(cmd)
+		},
+	}
+
+	RootCmd.AddCommand(cmdEditValidators)
 }
 
-func stressTestValidators(cmd *cobra.Command) error {
+func stressTestCreateValidators(cmd *cobra.Command) error {
 	basePath, err := filepath.Abs(cmdConfig.Persistent.Path)
 	if err != nil {
 		return err
@@ -31,7 +44,22 @@ func stressTestValidators(cmd *cobra.Command) error {
 		return err
 	}
 
-	validators.CreateValidators()
+	validatorsCreate.StressTestValidatorCreation()
+
+	return nil
+}
+
+func stressTestEditValidators(cmd *cobra.Command) error {
+	basePath, err := filepath.Abs(cmdConfig.Persistent.Path)
+	if err != nil {
+		return err
+	}
+
+	if err := validators.Configure(basePath, cmdConfig.Persistent); err != nil {
+		return err
+	}
+
+	validatorsEdit.StressTestValidatorEditing()
 
 	return nil
 }

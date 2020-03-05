@@ -2,7 +2,6 @@ package validators
 
 import (
 	"errors"
-	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -33,7 +32,6 @@ func Configure(basePath string, flags cmd.PersistentFlags) (err error) {
 	if err = loadStakingConfig(stakingPath); err != nil {
 		return err
 	}
-	fmt.Printf("\nStaking is now: %+v\n\n", Staking)
 
 	if Configuration.BasePath == "" {
 		Configuration.BasePath = basePath
@@ -148,8 +146,6 @@ func configureBaseConfig(flags cmd.PersistentFlags) error {
 	// Initialize the staking params - this converts values to numeric.Dec etc.
 	Staking.Initialize()
 	Staking.Timeout = tfUtils.NetworkTimeoutAdjustment(tfConfig.Configuration.Network.Name, Staking.Timeout)
-
-	fmt.Printf("\n\n STAKING IS: %+v\n\n", Staking)
 
 	return nil
 }

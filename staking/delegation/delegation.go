@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	sdkDelegation "github.com/SebastianJ/harmony-sdk/staking/delegation"
+	"github.com/harmony-one/harmony/numeric"
 )
 
 var (
@@ -12,16 +13,16 @@ var (
 )
 
 // Delegate - performs delegation
-func Delegate(validatorAddress string, nonce uint64) (map[string]interface{}, error) {
-	return executeDelegationMethod("delegate", validatorAddress, nonce)
+func Delegate(validatorAddress string, nonce uint64, gasPrice numeric.Dec) (map[string]interface{}, error) {
+	return executeDelegationMethod("delegate", validatorAddress, nonce, gasPrice)
 }
 
 // Undelegate - performs undelegation
-func Undelegate(validatorAddress string, nonce uint64) (map[string]interface{}, error) {
-	return executeDelegationMethod("undelegate", validatorAddress, nonce)
+func Undelegate(validatorAddress string, nonce uint64, gasPrice numeric.Dec) (map[string]interface{}, error) {
+	return executeDelegationMethod("undelegate", validatorAddress, nonce, gasPrice)
 }
 
-func executeDelegationMethod(method string, validatorAddress string, nonce uint64) (txResult map[string]interface{}, err error) {
+func executeDelegationMethod(method string, validatorAddress string, nonce uint64, gasPrice numeric.Dec) (txResult map[string]interface{}, err error) {
 	Configuration.Account.Account.Unlock()
 
 	if method == "delegate" {
@@ -34,7 +35,7 @@ func executeDelegationMethod(method string, validatorAddress string, nonce uint6
 			validatorAddress,
 			Configuration.Delegation.Amount,
 			Configuration.Delegation.Gas.Limit,
-			Configuration.Delegation.Gas.Price,
+			gasPrice,
 			nonce,
 			Configuration.Account.Account.Passphrase,
 			Configuration.Network.API.NodeAddress(0),
@@ -50,7 +51,7 @@ func executeDelegationMethod(method string, validatorAddress string, nonce uint6
 			validatorAddress,
 			Configuration.Delegation.Amount,
 			Configuration.Delegation.Gas.Limit,
-			Configuration.Delegation.Gas.Price,
+			gasPrice,
 			nonce,
 			Configuration.Account.Account.Passphrase,
 			Configuration.Network.API.NodeAddress(0),

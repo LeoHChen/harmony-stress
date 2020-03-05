@@ -8,8 +8,11 @@ import (
 	"sync"
 	"time"
 
+	sdkNetwork "github.com/SebastianJ/harmony-sdk/network"
 	sdkValidator "github.com/SebastianJ/harmony-sdk/staking/validator"
+	"github.com/SebastianJ/harmony-sdk/transactions"
 	"github.com/SebastianJ/harmony-stress/utils"
+	"github.com/harmony-one/harmony/numeric"
 )
 
 // StressTestDelegations - stress tests delegation functionality
@@ -17,8 +20,9 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 	pools := 1
 
 	currentNonce := Configuration.Account.Nonce
+	gasPrice := Configuration.Delegation.Gas.Price
 	fmt.Println(fmt.Sprintf("Running using network %s in %s mode", Configuration.Network.Name, strings.ToUpper(Configuration.Network.Mode)))
-	fmt.Println(fmt.Sprintf("Current nonce is: %d", currentNonce))
+	fmt.Println(fmt.Sprintf("Current nonce is: %d, current gas price is %f", currentNonce, gasPrice))
 
 	electedValidators, err := sdkValidator.AllElected(Configuration.Network.RPC)
 	fmt.Println(fmt.Sprintf("Found a total of %d elected validators to send delegations to", len(electedValidators)))
@@ -32,8 +36,9 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 		var waitGroup sync.WaitGroup
 
 		if poolIndex > 1 {
-			//currentNonce = sdkNetwork.CurrentNonce(Configuration.Network.RPC, Configuration.Application.From)
-			//fmt.Println(fmt.Sprintf("Nonce refreshed! Nonce is now: %d", currentNonce))
+			currentNonce = sdkNetwork.CurrentNonce(Configuration.Network.RPC, Configuration.Application.From)
+			gasPrice = transactions.BumpGasPrice(gasPrice)
+			fmt.Println(fmt.Sprintf("Nonce refreshed! Nonce is now: %d, gas price is now: %f", currentNonce, gasPrice))
 		}
 
 		for i := 0; i < Configuration.Application.PoolSize; i++ {
@@ -41,7 +46,7 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 			toAddress := utils.RandomStringSliceItem(r, electedValidators)
 
 			if Configuration.Application.Mode == "sync" {
-				txResult, err := sendDelegation(toAddress, currentNonce)
+				txResult, err := sendDelegation(toAddress, currentNonce, gasPrice)
 				if err != nil {
 					fmt.Println(fmt.Sprintf("Error occurred: %s", err.Error()))
 					return nil, err
@@ -50,7 +55,7 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 				txResults = append(txResults, txResult)
 			} else if Configuration.Application.Mode == "async" {
 				waitGroup.Add(1)
-				go asyncSendDelegation(toAddress, currentNonce, &waitGroup)
+				go asyncSendDelegation(toAddress, currentNonce, gasPrice, &waitGroup)
 			}
 
 			currentNonce = currentNonce + 1
@@ -64,20 +69,20 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 	return txResults, nil
 }
 
-func sendDelegation(address string, currentNonce uint64) (map[string]interface{}, error) {
-	return executeDelegation(address, currentNonce)
+func sendDelegation(address string, currentNonce uint64, gasPrice numeric.Dec) (map[string]interface{}, error) {
+	return executeDelegation(address, currentNonce, gasPrice)
 }
 
-func asyncSendDelegation(address string, currentNonce uint64, waitGroup *sync.WaitGroup) {
-	executeDelegation(address, currentNonce)
+func asyncSendDelegation(address string, currentNonce uint64, gasPrice numeric.Dec, waitGroup *sync.WaitGroup) {
+	executeDelegation(address, currentNonce, gasPrice)
 	defer waitGroup.Done()
 }
 
-func executeDelegation(address string, currentNonce uint64) (map[string]interface{}, error) {
-	txResult, err := Delegate(address, currentNonce)
+func executeDelegation(address string, currentNonce uint64, gasPrice numeric.Dec) (map[string]interface{}, error) {
+	txResult, err := Delegate(address, currentNonce, gasPrice)
 	if err == nil {
 		txHash := txResult["transactionHash"].(string)
-		fmt.Println(fmt.Sprintf("Sent delegation of %f from %s to %s, nonce: %d, tx hash: %s", Configuration.Delegation.Amount, Configuration.Account.Account.Address, address, currentNonce, txHash))
+		fmt.Println(fmt.Sprintf("Sent delegation of %f from %s to %s, nonce: %d, gas price: %f, tx hash: %s", Configuration.Delegation.Amount, Configuration.Account.Account.Address, address, currentNonce, gasPrice, txHash))
 	} else {
 		fmt.Println(fmt.Sprintf("Error occurred while sending delegation of %f from %s to %s, nonce: %d - error: %s", Configuration.Delegation.Amount, Configuration.Account.Account.Address, address, currentNonce, err.Error()))
 	}

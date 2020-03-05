@@ -32,7 +32,7 @@ delegation:
   to_shard: 0
   gas:
     limit: 53000
-    price: 5
+    price: 1
 
 transactions:
   amount: 0.000000000000000001

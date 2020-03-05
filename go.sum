@@ -11,6 +11,8 @@ github.com/SebastianJ/harmony-sdk v0.0.0-20200226052509-309acb5df63b/go.mod h1:R
 github.com/SebastianJ/harmony-sdk v0.0.0-20200302065913-42fb4d57d2e3 h1:W/YMLFSR5lMViFJnRnQOzdSc0Sp/DeS2P0vnSV4kGs0=
 github.com/SebastianJ/harmony-sdk v0.0.0-20200302065913-42fb4d57d2e3/go.mod h1:28f6D8n51BCKGLAq2oMi8dafxpbLxHYUsx7NQyr6x9w=
 github.com/SebastianJ/harmony-sdk v0.0.0-20200303041429-2b12ae103d7f h1:L5CdW4kRF5hEdj0RjWNlaCWVFKGUejqhChRp+qbe044=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200305033902-16fcd1482854 h1:pUtdf1WlaROYul5R4/pWqYLjV0Pugtg17af7O3zvZGE=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200305033902-16fcd1482854/go.mod h1:eSonY1V9xlWCdWJ/SSczFZp3gCv6vV2QQkwpT+3/4fU=
 github.com/SebastianJ/harmony-tf v0.0.0-20200226150147-34eb2f12e988/go.mod h1:4me64cVy6M2ksVQCwG3gUzc6l9aW/OBCL51eXmgmIng=
 github.com/SebastianJ/harmony-tf v0.0.0-20200302121414-b91bb36c9590 h1:GlyglPZcigpq1C//SRr3w16WAb8mFi+0C52BOufWUeY=
 github.com/SebastianJ/harmony-tf v0.0.0-20200302121414-b91bb36c9590/go.mod h1:Y8qr9t+6ZobWeJUuebtptXPjWAdhQ5Pu7/yAeIejEe8=
@@ -224,6 +226,8 @@ github.com/harmony-one/harmony v1.9.1-0.20200222204941-0a2154181527/go.mod h1:6q
 github.com/harmony-one/harmony v1.9.1-0.20200226190101-c6b27393154c/go.mod h1:m14GkIzJdooMKv9mGou//jM45czgsFV9rkVHHWW+EtU=
 github.com/harmony-one/harmony v1.9.1-0.20200229064310-c653234ca8e7 h1:wKQdexAYPwOljggPAjqXssPsM9JhwW8V7TXWvs1Phg4=
 github.com/harmony-one/harmony v1.9.1-0.20200229064310-c653234ca8e7/go.mod h1:m14GkIzJdooMKv9mGou//jM45czgsFV9rkVHHWW+EtU=
+github.com/harmony-one/harmony v1.9.1-0.20200302235437-268fbd254a9a h1:2LYbzbMA19JHN8Ubiq+VE0e+otalg+xuIasE+I+eboo=
+github.com/harmony-one/harmony v1.9.1-0.20200302235437-268fbd254a9a/go.mod h1:m14GkIzJdooMKv9mGou//jM45czgsFV9rkVHHWW+EtU=
 github.com/harmony-one/taggedrlp v0.1.4 h1:RZ+qy0VCzT+d/mTfq23gH3an5tSvxOhg6AddLDO6tKw=
 github.com/harmony-one/taggedrlp v0.1.4/go.mod h1:osO5TRXLKdgCP+oj2J9qfqhywMOOA+4nP5q+o8nDSYA=
 github.com/harmony-one/vdf v0.0.0-20190924175951-620379da8849/go.mod h1:EgNU7X5HLNBBho+OqCm1A1NrpD6xb1SHfi9pMCYaKKw=
