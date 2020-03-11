@@ -8,7 +8,7 @@ import (
 
 	sdkNetwork "github.com/SebastianJ/harmony-sdk/network"
 	cmd "github.com/SebastianJ/harmony-stress/config/cmd"
-	"github.com/SebastianJ/harmony-tx-sender/utils"
+	"github.com/SebastianJ/harmony-stress/utils"
 	goSdkCommon "github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/sharding"
 	"github.com/harmony-one/go-sdk/pkg/store"
@@ -99,7 +99,7 @@ func configureTransactionsConfig(flags cmd.PersistentFlags, txFlags cmd.TxFlags)
 	Configuration.Transactions.Initialize()
 
 	receiversPath := filepath.Join(Configuration.BasePath, "data/receivers.txt")
-	receivers, _ := utils.FetchReceivers(receiversPath)
+	receivers, _ := FetchReceivers(receiversPath)
 
 	if len(receivers) == 0 {
 		return fmt.Errorf("you need to create the file %s and add at least one receiver address to it", receiversPath)

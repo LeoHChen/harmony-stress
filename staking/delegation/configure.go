@@ -9,7 +9,7 @@ import (
 	sdkAccounts "github.com/SebastianJ/harmony-sdk/accounts"
 	sdkNetwork "github.com/SebastianJ/harmony-sdk/network"
 	cmd "github.com/SebastianJ/harmony-stress/config/cmd"
-	"github.com/SebastianJ/harmony-tx-sender/utils"
+	"github.com/SebastianJ/harmony-stress/utils"
 	goSdkCommon "github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/sharding"
 	"gopkg.in/yaml.v2"
