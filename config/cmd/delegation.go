@@ -5,9 +5,11 @@ var Delegation DelegationFlags
 
 // DelegationFlags represents the delegation flags
 type DelegationFlags struct {
-	Mode        string
-	FromShardID int
-	ToShardID   int
-	Amount      string
-	GasPrice    string
+	ValidatorAddress string
+	Mode             string
+	FromShardID      int
+	ToShardID        int
+	Amount           string
+	GasPrice         string
+	OnlyActive       bool
 }

@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"sync"
+	"time"
 
 	sdkAccounts "github.com/SebastianJ/harmony-sdk/accounts"
 	sdkCrypto "github.com/SebastianJ/harmony-sdk/crypto"
@@ -76,7 +77,7 @@ func PerformCreateValidators(index int, nonce int, gasPrice numeric.Dec) (int, i
 // CreateValidator - creates a given validator
 func CreateValidator(index int, nonce int, gasPrice numeric.Dec, waitGroup *sync.WaitGroup) error {
 	defer waitGroup.Done()
-	accountName := fmt.Sprintf("ValidatorSpammer_Account_%d", index)
+	accountName := fmt.Sprintf("CreateValidatorSpammer_Account_%d_%d", index, time.Now().UTC().UnixNano())
 	logger.AccountLog(fmt.Sprintf("Generating a new account: %s", accountName), validators.Configuration.Application.Verbose)
 
 	account, err := accounts.GenerateAccount(accountName)

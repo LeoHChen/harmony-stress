@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"math"
 	"sync"
+	"time"
 
 	sdkAccounts "github.com/SebastianJ/harmony-sdk/accounts"
 	sdkNetwork "github.com/SebastianJ/harmony-sdk/network"
@@ -37,7 +38,7 @@ func StressTestValidatorEditing() {
 // CreateAndEditValidator - creates a given validator
 func CreateAndEditValidator(index int, nonce int, gasPrice numeric.Dec) (int, error) {
 	var waitGroup sync.WaitGroup
-	accountName := fmt.Sprintf("ValidatorSpammer_Account_%d", index)
+	accountName := fmt.Sprintf("EditValidatorSpammer_Account_%d_%d", index, time.Now().UTC().UnixNano())
 	logger.AccountLog(fmt.Sprintf("Generating a new account: %s", accountName), validators.Configuration.Application.Verbose)
 
 	account, err := accounts.GenerateAccount(accountName)

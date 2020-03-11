@@ -15,18 +15,29 @@ import (
 	"github.com/harmony-one/harmony/numeric"
 )
 
+var (
+	validators []string
+)
+
 // StressTestDelegations - stress tests delegation functionality
-func StressTestDelegations() (txResults []map[string]interface{}, err error) {
+func StressTestDelegations(address string, onlyActive bool) (txResults []map[string]interface{}, err error) {
 	pools := 1
 
+	randomizeAddress := (address == "")
 	currentNonce := Configuration.Account.Nonce
 	gasPrice := Configuration.Delegation.Gas.Price
 	fmt.Println(fmt.Sprintf("Running using network %s in %s mode", Configuration.Network.Name, strings.ToUpper(Configuration.Network.Mode)))
 	fmt.Println(fmt.Sprintf("Current nonce is: %d, current gas price is %f", currentNonce, gasPrice))
 
-	//electedValidators, err := sdkValidator.AllElected(Configuration.Network.RPC)
-	allValidators, err := sdkValidator.All(Configuration.Network.RPC)
-	fmt.Println(fmt.Sprintf("Found a total of %d elected validators to send delegations to", len(allValidators)))
+	if randomizeAddress {
+		if onlyActive {
+			validators, err = sdkValidator.AllElected(Configuration.Network.RPC)
+			fmt.Println(fmt.Sprintf("Found a total of %d elected validators to send delegations to", len(validators)))
+		} else {
+			validators, err = sdkValidator.All(Configuration.Network.RPC)
+			fmt.Println(fmt.Sprintf("Found a total of %d total validators to send delegations to", len(validators)))
+		}
+	}
 
 	if Configuration.Application.Count > Configuration.Application.PoolSize {
 		pools = int(math.RoundToEven(float64(Configuration.Application.Count) / float64(Configuration.Application.PoolSize)))
@@ -43,11 +54,13 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 		}
 
 		for i := 0; i < Configuration.Application.PoolSize; i++ {
-			r := rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
-			toAddress := utils.RandomStringSliceItem(r, allValidators)
+			if randomizeAddress {
+				r := rand.New(rand.NewSource(time.Now().UTC().UnixNano()))
+				address = utils.RandomStringSliceItem(r, validators)
+			}
 
 			if Configuration.Application.Mode == "sync" {
-				txResult, err := sendDelegation(toAddress, currentNonce, gasPrice)
+				txResult, err := sendDelegation(address, currentNonce, gasPrice)
 				if err != nil {
 					fmt.Println(fmt.Sprintf("Error occurred: %s", err.Error()))
 					return nil, err
@@ -56,7 +69,7 @@ func StressTestDelegations() (txResults []map[string]interface{}, err error) {
 				txResults = append(txResults, txResult)
 			} else if Configuration.Application.Mode == "async" {
 				waitGroup.Add(1)
-				go asyncSendDelegation(toAddress, currentNonce, gasPrice, &waitGroup)
+				go asyncSendDelegation(address, currentNonce, gasPrice, &waitGroup)
 			}
 
 			currentNonce = currentNonce + 1
