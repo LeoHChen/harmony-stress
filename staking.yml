@@ -1,7 +1,7 @@
 from_shard_id: 0
 to_shard_id: 0
 nonce: -1 # -1 means that the nonce will automatically be identified
-timeout: 60
+timeout: 90
 gas:
   limit: -1 # -1 means that the gas limit will automatically get calculated
   price: 1

@@ -38,10 +38,11 @@ func init() {
 	RootCmd.PersistentFlags().BoolVar(&cmd.Persistent.Infinite, "infinite", false, "<infinite>")
 	RootCmd.PersistentFlags().IntVar(&cmd.Persistent.Count, "count", 1000, "<count>")
 	RootCmd.PersistentFlags().IntVar(&cmd.Persistent.PoolSize, "pool-size", 100, "<pool-size>")
-	RootCmd.PersistentFlags().IntVar(&cmd.Persistent.Timeout, "timeout", 0, "<pool-size>")
+	RootCmd.PersistentFlags().IntVar(&cmd.Persistent.Timeout, "timeout", 0, "<timeout>")
 	RootCmd.PersistentFlags().BoolVar(&cmd.Persistent.Verbose, "verbose", false, "<verbose>")
 	RootCmd.PersistentFlags().BoolVar(&cmd.Persistent.VerboseGoSdk, "verbose-go-sdk", false, "<verbose-go-sdk>")
 	RootCmd.PersistentFlags().IntVar(&cmd.Persistent.PprofPort, "pprof-port", -1, "<pprof-port>")
+	RootCmd.PersistentFlags().StringVar(&cmd.Persistent.GasPrice, "gas-price", "", "<gas-price>")
 }
 
 // Execute kicks off the hmy CLI

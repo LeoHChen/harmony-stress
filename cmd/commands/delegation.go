@@ -23,7 +23,6 @@ func init() {
 	cmdDelegation.Flags().IntVar(&cmdConfig.Delegation.FromShardID, "from-shard", 0, "<shardID>")
 	cmdDelegation.Flags().IntVar(&cmdConfig.Delegation.ToShardID, "to-shard", 0, "<shardID>")
 	cmdDelegation.Flags().StringVar(&cmdConfig.Delegation.Amount, "amount", "", "<amount>")
-	cmdDelegation.Flags().StringVar(&cmdConfig.Delegation.GasPrice, "gas-price", "", "<gas-price>")
 	cmdDelegation.Flags().BoolVar(&cmdConfig.Delegation.OnlyActive, "active", true, "<active>")
 
 	RootCmd.AddCommand(cmdDelegation)

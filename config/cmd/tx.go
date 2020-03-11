@@ -9,5 +9,4 @@ type TxFlags struct {
 	FromShardID int
 	ToShardID   int
 	Amount      string
-	GasPrice    string
 }

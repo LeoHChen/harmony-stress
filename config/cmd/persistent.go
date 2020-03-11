@@ -23,4 +23,5 @@ type PersistentFlags struct {
 	TxMode      string
 	FromShardID int
 	ToShardID   int
+	GasPrice    string
 }

@@ -23,7 +23,6 @@ func init() {
 	cmdTxs.Flags().IntVar(&cmdConfig.Tx.FromShardID, "from-shard", 0, "<shardID>")
 	cmdTxs.Flags().IntVar(&cmdConfig.Tx.ToShardID, "to-shard", 0, "<shardID>")
 	cmdTxs.Flags().StringVar(&cmdConfig.Tx.Amount, "amount", "", "<amount>")
-	cmdTxs.Flags().StringVar(&cmdConfig.Tx.GasPrice, "gas-price", "", "<gas-price>")
 
 	RootCmd.AddCommand(cmdTxs)
 }

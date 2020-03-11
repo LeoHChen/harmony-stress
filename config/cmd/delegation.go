@@ -10,6 +10,5 @@ type DelegationFlags struct {
 	FromShardID      int
 	ToShardID        int
 	Amount           string
-	GasPrice         string
 	OnlyActive       bool
 }

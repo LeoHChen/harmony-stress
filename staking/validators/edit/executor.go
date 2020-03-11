@@ -69,7 +69,7 @@ func CreateAndEditValidator(index int, nonce int, gasPrice numeric.Dec) (int, er
 		fmt.Println("")
 
 		validators.Staking.Create.Validator.Account = &account
-		blsKeys := crypto.GenerateBlsKeys(validators.Staking.Create.BLSKeyCount, "")
+		blsKeys := crypto.GenerateBlsKeys(validators.Staking.Create.BLSKeyCount, validators.Staking.Create.Validator.ShardID, "")
 		rawTx, err := tfStaking.CreateValidator(&account, nil, &validators.Staking, blsKeys)
 		if err != nil {
 			logger.ErrorLog(fmt.Sprintf("Failed to create validator - error: %s", err.Error()), validators.Configuration.Application.Verbose)
@@ -219,7 +219,7 @@ func rpcEditValidator(validatorAccount *sdkAccounts.Account, params *testParams.
 		params.Edit.Validator.MaximumTotalDelegation,
 		nil,
 		nil,
-		params.Edit.Validator.Active,
+		params.Edit.Validator.EligibilityStatus,
 		gasLimit,
 		gasPrice,
 		currentNonce,

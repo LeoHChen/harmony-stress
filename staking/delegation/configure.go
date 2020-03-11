@@ -84,8 +84,8 @@ func configureDelegationConfig(flags cmd.PersistentFlags, delegationFlags cmd.De
 		Configuration.Delegation.RawAmount = delegationFlags.Amount
 	}
 
-	if delegationFlags.GasPrice != "" && delegationFlags.GasPrice != Configuration.Delegation.Gas.RawPrice {
-		Configuration.Delegation.Gas.RawPrice = delegationFlags.GasPrice
+	if flags.GasPrice != "" && flags.GasPrice != Configuration.Delegation.Gas.RawPrice {
+		Configuration.Delegation.Gas.RawPrice = flags.GasPrice
 	}
 
 	Configuration.Delegation.Initialize()

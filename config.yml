@@ -19,7 +19,7 @@ account:
   passphrase: ""
 
 funding:
-  timeout: 60 # This will be multiplied * 4 to deal with the general slowness of the staking network
+  timeout: 90 # This will be multiplied * 4 to deal with the general slowness of the staking network
   attempts: 5
   gas:
     cost: 0.0001

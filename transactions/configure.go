@@ -80,8 +80,8 @@ func configureTransactionsConfig(flags cmd.PersistentFlags, txFlags cmd.TxFlags)
 		Configuration.Transactions.RawAmount = txFlags.Amount
 	}
 
-	if txFlags.GasPrice != "" && txFlags.GasPrice != Configuration.Transactions.Gas.RawPrice {
-		Configuration.Transactions.Gas.RawPrice = txFlags.GasPrice
+	if flags.GasPrice != "" && flags.GasPrice != Configuration.Transactions.Gas.RawPrice {
+		Configuration.Transactions.Gas.RawPrice = flags.GasPrice
 	}
 
 	if flags.Count >= 0 && flags.Count != Configuration.Transactions.Count {
