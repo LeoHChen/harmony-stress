@@ -97,7 +97,7 @@ func CreateValidator(index int, nonce int, gasPrice numeric.Dec, waitGroup *sync
 	logger.FundingLog(fmt.Sprintf("Available funding amount in the funding account %s, address: %s is %f", validators.Configuration.Funding.Account.Name, validators.Configuration.Funding.Account.Address, fundingAccountBalance), validators.Configuration.Application.Verbose)
 	fundingAmount := funding.CalculateFundingAmount(validators.Staking.Create.Validator.Amount, fundingAccountBalance, 1)
 	logger.FundingLog(fmt.Sprintf("Funding account %s, address: %s with %f", account.Name, account.Address, fundingAmount), validators.Configuration.Application.Verbose)
-	funding.PerformFundingTransaction(&validators.Configuration.Funding.Account, 0, account.Address, 0, fundingAmount, nonce, validators.Configuration.Funding.Gas.Limit, validators.Configuration.Funding.Gas.Price, validators.Configuration.Funding.Timeout, validators.Configuration.Funding.Attempts)
+	funding.PerformFundingTransaction(&validators.Configuration.Funding.Account, 0, account.Address, 0, fundingAmount, nonce, validators.Configuration.Funding.Gas.Limit, gasPrice, validators.Configuration.Funding.Timeout, validators.Configuration.Funding.Attempts)
 
 	accountStartingBalance, _ := balances.GetShardBalance(account.Address, 0)
 	logger.AccountLog(fmt.Sprintf("Using account %s, address: %s to create a new validator", account.Name, account.Address), validators.Configuration.Application.Verbose)
