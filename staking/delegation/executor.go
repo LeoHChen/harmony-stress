@@ -50,6 +50,9 @@ func StressTestDelegations(address string, onlyActive bool) (txResults []map[str
 		if poolIndex > 1 {
 			currentNonce = sdkNetwork.CurrentNonce(Configuration.Network.RPC, Configuration.Application.From)
 			gasPrice = transactions.BumpGasPrice(gasPrice)
+			if gasPrice.GT(Configuration.Delegation.Gas.Price.Mul(numeric.NewDec(100))) {
+				gasPrice = Configuration.Delegation.Gas.Price
+			}
 			fmt.Println(fmt.Sprintf("Nonce refreshed! Nonce is now: %d, gas price is now: %f", currentNonce, gasPrice))
 		}
 
