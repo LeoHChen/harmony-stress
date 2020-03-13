@@ -15,6 +15,8 @@ github.com/SebastianJ/harmony-sdk v0.0.0-20200311163046-41ff1045b0b0 h1:Et9xcqJH
 github.com/SebastianJ/harmony-sdk v0.0.0-20200311163046-41ff1045b0b0/go.mod h1:/svh3lvAb8/OJ/C4qLtoF3C63NC3uSweV5VFFje1RcQ=
 github.com/SebastianJ/harmony-sdk v0.0.0-20200313061055-f9432c12984b h1:L3wW+k1LBjwgyyjttuJ58CHvIPNJpDh4M+x023SDL5w=
 github.com/SebastianJ/harmony-sdk v0.0.0-20200313061055-f9432c12984b/go.mod h1:ZapPVb7GamwfBkbwtjdqFZMAvRfuS1WeconpYZVhNR0=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200313140741-57d8075c79f9 h1:1DW00V2WsNhUm3zxvnrcfNv4ssUj4n2X0GdhuJo1jpw=
+github.com/SebastianJ/harmony-sdk v0.0.0-20200313140741-57d8075c79f9/go.mod h1:ZapPVb7GamwfBkbwtjdqFZMAvRfuS1WeconpYZVhNR0=
 github.com/SebastianJ/harmony-tf v0.0.0-20200311091148-e2f0bb877e61 h1:+bNua0PvQ3UY4HRusnWGGveqE6j1vQdBJZ016XabTBU=
 github.com/SebastianJ/harmony-tf v0.0.0-20200311091148-e2f0bb877e61/go.mod h1:03RkzTxjHvlOXIePX+iauZof38O1zYXI0LMXef9VjrE=
 github.com/SebastianJ/harmony-tf v0.0.0-20200311142747-2c7331efbad5 h1:6hh62Uc4x9Jb86cLKwkwSZVdVUTH0qOsnogvfE1DFPU=
