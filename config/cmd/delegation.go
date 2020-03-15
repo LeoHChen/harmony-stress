@@ -11,4 +11,5 @@ type DelegationFlags struct {
 	ToShardID        int
 	Amount           string
 	OnlyActive       bool
+	DelegationMode   string
 }

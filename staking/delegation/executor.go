@@ -96,7 +96,7 @@ func asyncSendDelegation(address string, currentNonce uint64, gasPrice numeric.D
 }
 
 func executeDelegation(address string, currentNonce uint64, gasPrice numeric.Dec) (map[string]interface{}, error) {
-	txResult, err := Delegate(address, currentNonce, gasPrice)
+	txResult, err := Delegate(&Configuration.Account.Account, address, currentNonce, gasPrice)
 	if err == nil {
 		txHash := txResult["transactionHash"].(string)
 		fmt.Println(fmt.Sprintf("Sent delegation of %f from %s to %s, nonce: %d, gas price: %f, tx hash: %s", Configuration.Delegation.Amount, Configuration.Account.Account.Address, address, currentNonce, gasPrice, txHash))

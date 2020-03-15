@@ -3,6 +3,7 @@ package delegation
 import (
 	sdkAccounts "github.com/SebastianJ/harmony-sdk/accounts"
 	sdkNetwork "github.com/SebastianJ/harmony-sdk/network"
+	tfConfig "github.com/SebastianJ/harmony-tf/config"
 	"github.com/harmony-one/go-sdk/pkg/common"
 	goSdkRpc "github.com/harmony-one/go-sdk/pkg/rpc"
 	"github.com/harmony-one/harmony/numeric"
@@ -10,11 +11,12 @@ import (
 
 // Config - represents the config
 type Config struct {
-	BasePath    string      `yaml:"-"`
-	Network     Network     `yaml:"network"`
-	Application Application `yaml:"application"`
-	Delegation  Delegation  `yaml:"delegation"`
-	Account     Account     `yaml:"account"`
+	BasePath    string           `yaml:"-"`
+	Network     Network          `yaml:"network"`
+	Application Application      `yaml:"application"`
+	Delegation  Delegation       `yaml:"delegation"`
+	Account     Account          `yaml:"account"`
+	Funding     tfConfig.Funding `yaml:"funding"`
 }
 
 // Application - represents the transactions settings group

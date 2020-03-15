@@ -2,7 +2,6 @@ package delegation
 
 import (
 	"errors"
-	"fmt"
 	"path/filepath"
 	"strings"
 
@@ -10,6 +9,8 @@ import (
 	sdkNetwork "github.com/SebastianJ/harmony-sdk/network"
 	cmd "github.com/SebastianJ/harmony-stress/config/cmd"
 	"github.com/SebastianJ/harmony-stress/utils"
+	tfConfig "github.com/SebastianJ/harmony-tf/config"
+	tfUtils "github.com/SebastianJ/harmony-tf/utils"
 	goSdkCommon "github.com/harmony-one/go-sdk/pkg/common"
 	"github.com/harmony-one/go-sdk/pkg/sharding"
 	"gopkg.in/yaml.v2"
@@ -29,8 +30,8 @@ func Configure(basePath string, flags cmd.PersistentFlags, delegationFlags cmd.D
 		Configuration.BasePath = basePath
 	}
 
-	Configuration.Application.Verbose = flags.Verbose
-	sdkNetwork.Verbose = Configuration.Application.Verbose // Set the verbosity level of harmony-sdk
+	Configuration.Application.Verbose = true
+	sdkNetwork.Verbose = flags.Verbose
 	goSdkCommon.DebugRPC = flags.VerboseGoSdk
 
 	// It's very important that configureTransactionsConfig gets executed first since it sets config fields that are later used by other configuration steps
@@ -46,6 +47,12 @@ func Configure(basePath string, flags cmd.PersistentFlags, delegationFlags cmd.D
 		return err
 	}
 
+	if err = configureFundingConfig(flags, delegationFlags); err != nil {
+		return err
+	}
+
+	tfConfig.ConfigureStylingConfig()
+
 	return nil
 }
 
@@ -55,10 +62,9 @@ func configureDelegationConfig(flags cmd.PersistentFlags, delegationFlags cmd.De
 	}
 
 	fromAddress := flags.From
-	if fromAddress == "" {
-		return errors.New("you need to specify the sender address")
+	if fromAddress != "" {
+		Configuration.Application.From = fromAddress
 	}
-	Configuration.Application.From = fromAddress
 
 	if flags.Count >= 0 && flags.Count != Configuration.Application.Count {
 		Configuration.Application.Count = flags.Count
@@ -109,25 +115,20 @@ func configureNetworkConfig(flags cmd.PersistentFlags, delegationFlags cmd.Deleg
 		Configuration.Network.Mode = mode
 	}
 
-	Configuration.Network.API = sdkNetwork.Network{
-		Name: Configuration.Network.Name,
-		Mode: Configuration.Network.Mode,
-	}
-
-	Configuration.Network.API.Initialize()
-	// Temporarily hard code nodes to work around RPC limits
-
 	if flags.Node != "" && flags.Node != Configuration.Network.Node {
 		Configuration.Network.Node = flags.Node
 	}
 
-	if Configuration.Network.Node == "" {
-		Configuration.Network.Node = Configuration.Network.API.NodeAddress(Configuration.Delegation.FromShard)
+	Configuration.Network.API = sdkNetwork.Network{
+		Name: Configuration.Network.Name,
+		Mode: Configuration.Network.Mode,
+		Node: Configuration.Network.Node,
 	}
 
-	if Configuration.Application.Verbose {
-		fmt.Printf("Using network: %s, mode: %s, node: %s\n", Configuration.Network.Name, Configuration.Network.Mode, Configuration.Network.Node)
-	}
+	Configuration.Network.Gas.Initialize()
+	Configuration.Network.API.Initialize()
+
+	Configuration.Network.Node = Configuration.Network.API.NodeAddress(0)
 
 	shardingStructure, err := sharding.Structure(Configuration.Network.Node)
 	if err != nil {
@@ -136,9 +137,18 @@ func configureNetworkConfig(flags cmd.PersistentFlags, delegationFlags cmd.Deleg
 
 	Configuration.Network.Shards = len(shardingStructure)
 
-	Configuration.Network.RPC, err = sdkNetwork.NewRPCClient(Configuration.Network.Node, Configuration.Delegation.FromShard)
+	Configuration.Network.RPC, err = Configuration.Network.API.RPCClient(0)
 	if err != nil {
 		return err
+	}
+
+	tfConfig.Configuration.Network = tfConfig.Network{
+		Name:   Configuration.Network.Name,
+		Mode:   Configuration.Network.Mode,
+		Node:   Configuration.Network.Node,
+		Shards: Configuration.Network.Shards,
+		API:    Configuration.Network.API,
+		Gas:    Configuration.Network.Gas,
 	}
 
 	return nil
@@ -156,6 +166,33 @@ func configureAccountConfig(flags cmd.PersistentFlags, delegationFlags cmd.Deleg
 	Configuration.Account.Account.Unlock()
 
 	Configuration.Account.Nonce = sdkNetwork.CurrentNonce(Configuration.Network.RPC, Configuration.Application.From)
+
+	return nil
+}
+
+func configureFundingConfig(flags cmd.PersistentFlags, delegationFlags cmd.DelegationFlags) (err error) {
+	fromAddress := flags.From
+	if fromAddress != "" {
+		Configuration.Funding.Account.Address = fromAddress
+
+		if Configuration.Funding.Account.Name == "" {
+			Configuration.Funding.Account.Name = sdkAccounts.FindAccountNameByAddress(Configuration.Funding.Account.Address)
+		}
+
+		Configuration.Funding.Account.Passphrase = Configuration.Application.Passphrase
+		tfConfig.Configuration.Account.Passphrase = Configuration.Application.Passphrase
+
+		Configuration.Funding.Gas.Initialize()
+
+		tfConfig.Configuration.Funding = tfConfig.Funding{
+			Account:  Configuration.Funding.Account,
+			Timeout:  Configuration.Funding.Timeout,
+			Attempts: Configuration.Funding.Attempts,
+			Gas:      Configuration.Funding.Gas,
+		}
+
+		tfConfig.Configuration.Funding.Timeout = tfUtils.NetworkTimeoutAdjustment(tfConfig.Configuration.Network.Name, tfConfig.Configuration.Funding.Timeout)
+	}
 
 	return nil
 }

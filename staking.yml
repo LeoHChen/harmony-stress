@@ -21,7 +21,7 @@ create:
     amount: 1
     minimum_self_delegation: 1
     maximum_total_delegation: 1000
-  bls_key_count: 200
+  bls_key_count: 1
 edit:
   validator:
     details:

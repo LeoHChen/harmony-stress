@@ -5,7 +5,7 @@ application:
   pool_size: 10
   verbose: true
   passphrase: ""
-  timeout: 1
+  timeout: 0
 
 network:
   name: "localnet"
@@ -27,9 +27,10 @@ funding:
     price: 1
 
 delegation:
-  amount: 0.000000000000000001
+  amount: 1
   from_shard: 0
   to_shard: 0
+  timeout: 60
   gas:
     limit: 53000
     price: 1
